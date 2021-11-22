@@ -11,21 +11,22 @@ P1_IP = '192.168.137.105'
 TCP_PORT = 5005
 BUFFER_SIZE = 20  # Normally 1024, but we want fast response
 
-def recieving():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((TCP_IP, TCP_PORT))
-    s.listen(1)
- 
-    conn, addr = s.accept()
-    print('Connection address:', addr)
-    while 1:
-        data = conn.recv(BUFFER_SIZE)
-        if not data: continue
-        print("received data:", data)
-        conn.send(data)  # echo
-        conn, addr = s.accept()
-    conn.close()
-    print("Closed")
+def recieving(cmd):
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.bind((TCP_IP, TCP_PORT))
+	s.listen(1)
+	conn, addr = s.accept()
+	print('Connection address:', addr)
+	while 1:
+		if(cmd=="0"):
+			break
+		data = conn.recv(BUFFER_SIZE)
+	    if not data: continue
+		print("received data:", data)
+		conn.send(data)  # echo
+		conn, addr = s.accept()
+	conn.close()
+	print("Closed")
 
 def send_cmd(cmd):
 	print("Sending...")
@@ -65,4 +66,3 @@ def download():
 	path = "sensorlog.csv"
 	return send_file(path, as_attachment=True)
 
-recieving()
