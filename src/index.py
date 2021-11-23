@@ -1,7 +1,7 @@
 from time import *
 import time
 import datetime
-import main2
+import main
 import threading
 import sys
 global time0s
@@ -19,20 +19,18 @@ def index():
         if request.form.get('action1') == 'Sensor On':
             print("Sensor On")
             index.active0='Sensor On'
-            main2.insert(str(1))
             pass # do something
         elif  request.form.get('action2') == 'Sensor Off':
             print("Sensor Off")
             index.active0='Sensor Off'
-            main2.insert(str(0))
             pass # do something else
         elif  request.form.get('action3') == 'Status':
             print("Status")
-            main2.status(index.active0)
+            main.status(index.active0)
             pass # do something else
         elif  request.form.get('action4') == 'Log Check':
             print("Log Check")
-            main2.logcheck()
+            main.logcheck()
             pass # do something else
         elif  request.form.get('action5') == 'Log download':
             print("Log Download")
@@ -40,7 +38,6 @@ def index():
         elif  request.form.get('action6') == 'Exit':
             print("Exited")
             index.active0='Exit'
-            main2.insert(str(2))
             pass # do something else
         else:
             pass # unknown
@@ -50,22 +47,22 @@ def index():
     return render_template('index.html')
 
 def fun1():
-    main2.create()
+    main.create()
     while 1:
         time.sleep(10)
-        if (main2.status_check()==str(0)):
+        if (active0=='Sensor Off'):
+            main.recieving(0)
             continue
-        if (main2.status_check()==str(1)):
+        if (active0=='Sensor Off'):
             tim = time0.strftime("%H:%M:%S")
-            main2.send()
-        if (main2.status_check()==2):
+            main.recieving(1)
+        if (active0=='Sensor Off'):
             break
             
         
         
 if __name__ == '__main__':
-    main2.insert(str(1))
-    print(main2.status_check())
+    print(active0)
     x=threading.Thread(target=fun1)
     x.start()
     app.run(host='0.0.0.0', port=80)
